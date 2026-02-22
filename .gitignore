@@ -1,0 +1,24 @@
+.aider*
+repo
+.venv
+.linux-venv
+.claude
+secrets
+credentials
+.crt
+.key
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
