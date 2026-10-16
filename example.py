@@ -18,11 +18,12 @@ from gherkins.StageManager import StageManager
 # Configuration — replace placeholder values before running
 # ---------------------------------------------------------------------------
 REPO_URL         = "https://github.com/<your-username>/<your-repo>.git"
+BRANCH_NAME      = "main"
 SERVER_IP        = "your.server.ip"
 SERVER_USER_NAME = "your_username"
 
 # --- Local paths ---
-LOCAL_REPO_DIR   = "./repo"
+LOCAL_REPO_DIR   = "./repo/" + BRANCH_NAME
 SECRETS_DIR      = "./secrets"
 SSH_KEY_PATH     = "./credentials/ssh_key.pem"
 NGINX_CONF_PATH  = "./nginx.conf"
@@ -42,7 +43,7 @@ server = ServerConnection(SERVER_IP, SERVER_USER_NAME, SSH_KEY_PATH)
 def stage_1():
     # Clone repo locally if not already cloned
     if not os.path.exists(LOCAL_REPO_DIR):
-        local_exec(f"git clone {REPO_URL} {LOCAL_REPO_DIR}")
+        local_exec(f"git clone -b {BRANCH_NAME} --single-branch {REPO_URL} {LOCAL_REPO_DIR}")
     else:
         print("Repo already cloned. Pulling instead.")
         local_exec(
