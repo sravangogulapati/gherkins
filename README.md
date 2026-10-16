@@ -45,19 +45,32 @@ sm.run()
 
 ## Installation
 
-> **Note:** gherkins is not yet published to PyPI. Install by cloning the repo directly.
+gherkins is not yet published to PyPI. Install it directly from GitHub into your project's Python environment; you do not need to copy the `gherkins/` folder into your project.
 
 ```bash
-git clone https://github.com/<your-username>/gherkins.git
-cd gherkins
-pip install -r gherkins/requirements.txt
+python -m pip install "gherkins @ git+https://github.com/sravangogulapati/gherkins.git@main"
 ```
 
-Or install as an editable package (requires pip ≥ 21):
+If your project uses uv, add it as a dependency instead:
 
 ```bash
-pip install -e .
+uv add git+https://github.com/sravangogulapati/gherkins.git
 ```
+
+The installation also installs gherkins' declared dependencies. To get changes pushed to `main`, update the installation explicitly:
+
+```bash
+python -m pip install --upgrade --force-reinstall "gherkins @ git+https://github.com/sravangogulapati/gherkins.git@main"
+```
+
+For a uv project, update its locked Git revision and sync the environment:
+
+```bash
+uv lock --upgrade-package gherkins
+uv sync
+```
+
+For repeatable deployments, replace `@main` with a release tag or commit when installing with pip. GitHub installations do not update automatically after a push.
 
 ---
 
@@ -72,7 +85,7 @@ See [`example.py`](example.py) for a complete, annotated deployment script. The 
 5. Configuring and restarting NGINX
 6. Launching a uvicorn backend process
 
-To try it, copy `example.py`, fill in your server details, and run:
+To try it, install gherkins as shown above, copy `example.py` into your project, fill in your server details, and run:
 
 ```bash
 python example.py                        # run all stages
@@ -163,7 +176,7 @@ gherkins/
 ├── __init__.py        # Public API exports and version
 ├── StageManager.py    # Decorator-based pipeline manager
 ├── Serloc.py          # Local exec + SSH/SCP client
-└── requirements.txt   # Library dependencies
+└── requirements.txt   # Legacy pinned dependency list (not needed to install)
 
 example.py             # Annotated demo deployment script
 pyproject.toml         # Packaging metadata
@@ -175,14 +188,13 @@ pyproject.toml         # Packaging metadata
 
 ```bash
 # Clone and set up
-git clone https://github.com/<your-username>/gherkins.git
+git clone https://github.com/sravangogulapati/gherkins.git
 cd gherkins
 python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r gherkins/requirements.txt
+python -m pip install -e ".[dev]"
 
 # Run tests
-pip install pytest
 pytest tests/
 
 # Validate the example script (requires valid server credentials)
